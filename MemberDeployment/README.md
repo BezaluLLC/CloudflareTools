@@ -63,7 +63,7 @@ carol@example.com,Administrator
 - **Email** — the Cloudflare account email address of the user to add.
 - **Role** — the exact Cloudflare role name. Case-sensitive. Run with `-ListRolesOnly` to see available roles for each account.
 
-A sample file is included: [`users.csv`](users.csv)
+A sample file is included: [`usersExample.csv`](usersExample.csv)
 
 > **Note:** If a role named "Super Administrator - All Privileges" is requested for a partner-managed account that does not surface that role (common for tenant accounts), the script automatically downgrades the assignment to "Administrator" and logs a notice.
 
