@@ -1,0 +1,3 @@
+# Never commit real local settings (contains API tokens)
+local.settings.json
+users.csv
