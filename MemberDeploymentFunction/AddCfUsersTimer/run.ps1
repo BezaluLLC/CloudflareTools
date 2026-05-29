@@ -138,6 +138,10 @@ $accounts = foreach ($a in $rawAccounts.Values) {
     }
 }
 
+if (-not $accounts -or $accounts.Count -eq 0) {
+    throw "No eligible Cloudflare accounts to process after classification. Check your tokens and any account-selection/skip configuration."
+}
+
 # ── Role cache ────────────────────────────────────────────────────────────────
 
 $roleCache = @{}
