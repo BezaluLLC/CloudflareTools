@@ -9,8 +9,7 @@ Bulk member management for Cloudflare accounts. Designed for agencies and MSPs m
 | `MemberDeployment/` | Standalone PowerShell script — run locally on-demand |
 | `MemberDeploymentFunction/` | Azure Functions (PowerShell, timer-triggered) — runs hourly on a schedule |
 
-Both variants read a `users.csv` file and add users to every Cloudflare account discoverable by your API token(s).  
-Take care to ensure this file is not exposed publicly, as it outlines your team's emails and permission layout.  
+The standalone variant reads a `users.csv` file. The Azure Function variant reads comma-delimited email addresses from `SUPERADMIN_USERS` and `ADMIN_USERS`. Both add users to every Cloudflare account discoverable by your API token(s).
 
 ## Quick Start
 
@@ -32,17 +31,16 @@ cd MemberDeployment
 ### Azure Function (scheduled)
 
 1. Create an Azure Function App (PowerShell 7.4 runtime).
-2. Set `CF_PERSONAL_TOKEN`, `CF_PARTNER_TOKEN`, and optionally `CF_DRY_RUN` in **Application Settings**.
-3. Place your `users.csv` in the `MemberDeploymentFunction/` root.
-4. Deploy via CI/CD pipeline or directly from your IDE (e.g. VS Code Azure Functions extension).
+2. Set `CF_PERSONAL_TOKEN`, `CF_PARTNER_TOKEN`, `SUPERADMIN_USERS`, `ADMIN_USERS`, and optionally `CF_DRY_RUN` in **Application Settings**.
+3. Deploy via CI/CD pipeline or directly from your IDE (e.g. VS Code Azure Functions extension).
 
-For local development, copy `local.settings.json.example` → `local.settings.json` and fill in tokens.
+For local development, copy `local.settings.json.example` → `local.settings.json` and fill in tokens and user email addresses.
 
 The function triggers hourly (`0 0 * * * *`). Set `CF_DRY_RUN=true` to preview without changes.
 
 ## Documentation
 
-See [`docs/`](docs/) for detailed usage, token setup, CSV format, and behavior reference.
+See [`docs/`](docs/) for detailed usage, token setup, CSV format, user configuration, and behavior reference.
 
 ## License
 
