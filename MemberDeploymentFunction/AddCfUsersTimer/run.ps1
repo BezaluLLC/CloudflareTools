@@ -45,7 +45,7 @@ if ($users.Count -eq 0) {
 $duplicateEmails = @($users | Group-Object -Property Email | Where-Object Count -gt 1)
 if ($duplicateEmails.Count -gt 0) {
     $duplicates = ($duplicateEmails | Select-Object -ExpandProperty Name) -join ", "
-    throw "Each email address must appear in only one of SUPERADMIN_USERS or ADMIN_USERS. Duplicates: $duplicates"
+    throw "Each email address must appear only once across SUPERADMIN_USERS and ADMIN_USERS. Duplicates: $duplicates"
 }
 
 # ── API helper ────────────────────────────────────────────────────────────────
