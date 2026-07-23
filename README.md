@@ -9,7 +9,7 @@ Bulk member management for Cloudflare accounts. Designed for agencies and MSPs m
 | `MemberDeployment/` | Standalone PowerShell script — run locally on-demand |
 | `MemberDeploymentFunction/` | Azure Functions (PowerShell, timer-triggered) — runs hourly on a schedule |
 
-The standalone variant reads a `users.csv` file. The Azure Function variant reads comma-delimited email addresses from `SUPERADMIN_USERS` and `ADMIN_USERS`. Both add users to every Cloudflare account discoverable by your API token(s).
+The standalone variant reads a `users.csv` file (treat it as sensitive and keep it out of source control). The Azure Function variant reads comma-delimited email addresses from `SUPERADMIN_USERS` and `ADMIN_USERS`. Both add users to discovered Cloudflare accounts (see `docs/behavior.md` for account exclusion/skipping).
 
 ## Quick Start
 
