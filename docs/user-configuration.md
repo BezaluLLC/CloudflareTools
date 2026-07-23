@@ -1,6 +1,6 @@
 # User Configuration
 
-Configure users with two comma-delimited environment variables:
+Configure Azure Function users with two comma-delimited environment variables (Application Settings / `local.settings.json` for local dev). The standalone script still uses `users.csv`:
 
 ```powershell
 $env:SUPERADMIN_USERS = "alice@example.com"
