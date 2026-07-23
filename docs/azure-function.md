@@ -17,15 +17,17 @@ The `MemberDeploymentFunction/` directory contains a timer-triggered Azure Funct
 |-------------|-------------|
 | `CF_PERSONAL_TOKEN` | Personal API token |
 | `CF_PARTNER_TOKEN` | Partner API token (optional) |
+| `SUPERADMIN_USERS` | Comma-delimited email addresses assigned `Super Administrator - All Privileges` |
+| `ADMIN_USERS` | Comma-delimited email addresses assigned `Administrator` |
 | `CF_DRY_RUN` | Set to `"true"` to preview without changes |
 
 ## Schedule
 
 Default: hourly (`0 0 * * * *`). Modify the `schedule` in `AddCfUsersTimer/function.json`.
 
-## Users CSV
+## Users
 
-Place `users.csv` in the `MemberDeploymentFunction/` root directory. It deploys alongside the function code.
+Set `SUPERADMIN_USERS` and `ADMIN_USERS` in Application Settings. Whitespace around comma-delimited addresses is ignored. An address must appear in only one variable.
 
 ## Local Development
 

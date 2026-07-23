@@ -12,17 +12,40 @@ if ([string]::IsNullOrWhiteSpace($PersonalToken) -and [string]::IsNullOrWhiteSpa
     throw "Supply at least one token via App Settings: CF_PERSONAL_TOKEN / CF_PARTNER_TOKEN."
 }
 
-# ── Load users CSV (bundled with the deployment package) ─────────────────────
+# ── Load users from App Settings ──────────────────────────────────────────────
 
-$UsersCsvPath = "$PSScriptRoot/../users.csv"
-if (-not (Test-Path -LiteralPath $UsersCsvPath)) { throw "users.csv not found at: $UsersCsvPath" }
+$superAdminEmails = @()
+$adminEmails = @()
+if (-not [string]::IsNullOrWhiteSpace($env:SUPERADMIN_USERS)) {
+    $superAdminEmails = @($env:SUPERADMIN_USERS -split "," | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+}
+if (-not [string]::IsNullOrWhiteSpace($env:ADMIN_USERS)) {
+    $adminEmails = @($env:ADMIN_USERS -split "," | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+}
 
-$users = Import-Csv -LiteralPath $UsersCsvPath
-if (-not $users -or $users.Count -eq 0) { throw "users.csv is empty." }
-foreach ($u in $users) {
-    if (-not $u.Email -or -not $u.Role) {
-        throw "users.csv row missing Email or Role: $($u | ConvertTo-Json -Compress)"
+$users = @(
+    foreach ($email in $superAdminEmails) {
+        [pscustomobject]@{
+            Email = $email
+            Role  = "Super Administrator - All Privileges"
+        }
     }
+    foreach ($email in $adminEmails) {
+        [pscustomobject]@{
+            Email = $email
+            Role  = "Administrator"
+        }
+    }
+)
+
+if ($users.Count -eq 0) {
+    throw "Set SUPERADMIN_USERS and/or ADMIN_USERS to comma-delimited email addresses."
+}
+
+$duplicateEmails = @($users | Group-Object -Property Email | Where-Object Count -gt 1)
+if ($duplicateEmails.Count -gt 0) {
+    $duplicates = ($duplicateEmails | Select-Object -ExpandProperty Name) -join ", "
+    throw "Each email address must appear only once across SUPERADMIN_USERS and ADMIN_USERS. Duplicates: $duplicates"
 }
 
 # ── API helper ────────────────────────────────────────────────────────────────
